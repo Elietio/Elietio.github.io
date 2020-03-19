@@ -1,10 +1,14 @@
 ---
 layout: post
 title: Nintendo Switch更换内存卡
-date: 2019-04-30 22:39:27
 categories: 电子产品
-tags: [Nintendo Switch,NS,电子产品]
-photo: 
+tags:
+  - Nintendo Switch
+  - NS
+  - 电子产品
+abbrlink: 9f2531c3
+date: 2019-04-30 22:39:27
+photo:
 ---
 
 NS入手一年多了，一直拿张32G的microSD卡凑合着，因为入手游戏不多，又都是实体版，所以下载几个DLC也完全够了，不过考虑到实体版换卡还是麻烦，而且今年感兴趣的游戏也不少，有些不打算买实体了，所以一直想找个机会换张大一点的microSD卡，正好狗东200G闪迪卡活动195，价格还算OK，于是入手换之。

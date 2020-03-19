@@ -7,8 +7,9 @@ copyright: true
 comment: true
 url: 1.html
 id: 1
-date: 2017-06-26 00:29:32
 tags: Java
+abbrlink: 7a9cc514
+date: 2017-06-26 00:29:32
 photo:
 ---
 

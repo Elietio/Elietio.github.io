@@ -1,11 +1,13 @@
 ---
 title: Jedis Unexpected end of stream 异常
-date: 2019-05-12 19:37:06
 categories: Java
-tags: [Redis]
-description:
+tags:
+  - Redis
 copyright: true
 comment: true
+abbrlink: ab6869b3
+date: 2019-05-12 19:37:06
+description:
 ---
 
 这周末项目生产要上一个修数版本，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常`Unexpected end of stream`意外停止。

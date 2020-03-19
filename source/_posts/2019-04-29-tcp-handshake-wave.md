@@ -1,12 +1,16 @@
 ---
 title: TCP的三次握手和四次挥手
-date: 2019-04-29 22:14:49
-tags: [TCP,网络]
-categories: [技术]
+tags:
+  - TCP
+  - 网络
+categories:
+  - 技术
 mathjax: true
 copyright: true
 comment: true
-photo: /img/tcp-handshake-wave/abstract.png 
+photo: /img/tcp-handshake-wave/abstract.png
+abbrlink: b86735db
+date: 2019-04-29 22:14:49
 ---
 
 `TCP（Transmission Control Protoco）`，是一种基于字节流面向连接的传输层协议。数据的传输需要通信双方建立一个连接，TCP协议采用三次握手建立一个连接，采用 4 次挥手来关闭一个连接。每一个TCP连接都有两个端点，叫作套接字（socket），它的定义为IP地址+端口号拼接。

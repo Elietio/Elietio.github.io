@@ -1,11 +1,15 @@
 ---
 title: socketRead0阻塞导致线程卡死问题分析排查
-date: 2019-10-11 20:26:54
 categories: Java
-tags: [排错,异常,socketRead0]
-description:
+tags:
+  - 排错
+  - 异常
+  - socketRead0
 copyright: true
 comment: true
+abbrlink: 774f1877
+date: 2019-10-11 20:26:54
+description:
 ---
 
 ### 问题描述：Consumer进程无法处理消息

@@ -1,10 +1,16 @@
 ---
 layout: post
 title: hexo和主题多设备同步
-date: 2019-04-12 19:39:27
-categories: [hexo]
-tags: [linux,hexo,git,subtree]
+categories:
+  - hexo
+tags:
+  - linux
+  - hexo
+  - git
+  - subtree
 photo: /img/hexo-themes-subtree/abstract.png
+abbrlink: d00638d8
+date: 2019-04-12 19:39:27
 ---
 
 使用hexo可以生成静态网页部署到GitHub和VPS上搭建个人博客，但是hexo的部署都是在本地，如果换了一套环境如何也能够编辑发布自己的博客网站呢？

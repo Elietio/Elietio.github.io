@@ -1,12 +1,13 @@
 ---
-title: 对于含有泛型的类,如何在类中获取泛型的class对象？
+title: '对于含有泛型的类,如何在类中获取泛型的class对象？'
 categories:
   - Java
 mathjax: true
 copyright: true
 comment: true
-date: 2018-5-5 
+date: 2018-5-5
 tags: Java
+abbrlink: eb59d595
 ---
 
 

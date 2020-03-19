@@ -1,12 +1,17 @@
 ---
 title: Oracle批量插入数据异常 java.lang.ArrayIndexOutOfBoundsException
-date: 2019-08-28 20:14:49
-tags: [Java,Oracle,异常]
-categories: [Java]
+tags:
+  - Java
+  - Oracle
+  - 异常
+categories:
+  - Java
 mathjax: true
 copyright: true
 comment: true
-photo: 
+abbrlink: e6c1ebcb
+date: 2019-08-28 20:14:49
+photo:
 ---
 今天测试过程中一个Oracle mybatis批量插入数据的代码报出了一个异常
  ` Caused by: java.lang.ArrayIndexOutOfBoundsException: -32768`

@@ -1,12 +1,16 @@
 ---
 title: 谷歌SLOT A/B机制下安卓刷入TWRP和Magisk以及OTA的一些方法
-date: 2019-10-12 22:14:49
-tags: [安卓,ROOT]
-categories: [技术]
+tags:
+  - 安卓
+  - ROOT
+categories:
+  - 技术
 mathjax: true
 copyright: true
 comment: true
 photo: /img/magisk/magisk.png
+abbrlink: d1df635e
+date: 2019-10-12 22:14:49
 ---
 A/B 系统分区是 Google 在 Android 7.0 时代引入的新机制，采用这个机制的设备拥有 A、B 两套系统分区，用户数据则能够在这两套系统分区之间共用。
 <!-- more -->

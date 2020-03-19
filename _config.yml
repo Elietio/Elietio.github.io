@@ -14,8 +14,11 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://www.elietio.xyz
 root: /
-permalink: :year/:month/:title.html
-permalink_defaults:
+permalink: posts/:abbrlink.html
+abbrlink:
+    alg: crc32   #算法： crc16(default) and crc32
+    rep: hex     #进制： dec(default) and hex
+#permalink_defaults:
 
 # Directory
 source_dir: source
