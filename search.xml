@@ -47,8 +47,8 @@
         <category>Java</category>
       </categories>
       <tags>
-        <tag>异常</tag>
         <tag>排错</tag>
+        <tag>异常</tag>
         <tag>java.ext.dirs</tag>
       </tags>
   </entry>
@@ -98,8 +98,8 @@
         <category>Java</category>
       </categories>
       <tags>
-        <tag>异常</tag>
         <tag>排错</tag>
+        <tag>异常</tag>
         <tag>socketRead0</tag>
       </tags>
   </entry>
@@ -112,8 +112,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Oracle</tag>
         <tag>异常</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>

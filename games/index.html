@@ -1425,7 +1425,13 @@ for (var i = 0; i < tabs.length; i++) {
     tabs[i].onclick = tabClick;
     tabs[i].onclick.apply(tabs[i]);
 }
-tabs[2].click();
+var url = document.location.toString();
+if (url.search("games") != -1){
+    tabs[0].click();
+} else {
+    tabs[2].click();
+}
+
 
     var firstpages = document.getElementsByClassName("hexo-douban-firstpage");
 var previouspages = document.getElementsByClassName("hexo-douban-previouspage");
