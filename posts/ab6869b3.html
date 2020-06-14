@@ -151,18 +151,18 @@
 
 
 
-  <meta name="description" content="这周末项目生产要上一个修数版本，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
+  <meta name="description" content="这周末版本升级遇到一个Jedis异常，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jedis Unexpected end of stream 异常">
 <meta property="og:url" content="https://www.elietio.xyz/posts/ab6869b3.html">
 <meta property="og:site_name" content="零の轨迹">
-<meta property="og:description" content="这周末项目生产要上一个修数版本，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
+<meta property="og:description" content="这周末版本升级遇到一个Jedis异常，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-13T08:18:25.216Z">
+<meta property="og:updated_time" content="2020-06-14T02:29:54.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jedis Unexpected end of stream 异常">
-<meta name="twitter:description" content="这周末项目生产要上一个修数版本，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
+<meta name="twitter:description" content="这周末版本升级遇到一个Jedis异常，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常Unexpected end of stream意外停止。">
 
 
 
@@ -547,7 +547,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-06-13 16:18:25" itemprop="dateModified" datetime="2020-06-13T16:18:25+08:00">2020-06-13</time>
+                <time title="修改时间：2020-06-14 10:29:54" itemprop="dateModified" datetime="2020-06-14T10:29:54+08:00">2020-06-14</time>
               
             
           </span>
@@ -623,9 +623,9 @@
       
 
       
-        <p>这周末项目生产要上一个修数版本，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常<code>Unexpected end of stream</code>意外停止。<br><a id="more"></a></p>
+        <p>这周末版本升级遇到一个Jedis异常，其中一步是从Mysql中的临时表查找数据然后拼装key从Redis中查找对应的缓存数据并修改。然而升级过程中修数程序却抛出一个异常<code>Unexpected end of stream</code>意外停止。<br><a id="more"></a></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream.</span><br><span class="line">    at redis.clients.util.RedisInputStream.ensureFill(RedisInputStream.java:<span class="number">199</span>)</span><br><span class="line">    at redis.clients.util.RedisInputStream.readByte(RedisInputStream.java:<span class="number">40</span>)</span><br><span class="line">    at redis.clients.jedis.Protocol.process(Protocol.java:<span class="number">151</span>)</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-<p>需要修数的Redis采用的是codis搭建的集群，我们立即Telnet访问的端口，并在服务器使用Redis-cli直接连接，结果都未发现异常。于是立即去网上查找相关资料，网上都这样描述此异常。</p>
+<p>Redis采用的是codis搭建的集群，我们立即Telnet访问的端口，并在服务器使用Redis-cli直接连接，结果都未发现异常。于是立即去网上查找相关资料，网上都这样描述此异常。</p>
 <p>客户端缓冲区异常<br>这个异常是客户端缓冲区异常，产生这个问题可能有三个原因：</p>
 <ol>
 <li><p>多个线程使用一个Jedis连接。</p>
@@ -638,7 +638,7 @@
 </li>
 </ol>
 <p>于是我们立即对配置进行了检查，并未发现有相关问题，timeout默认设置为0，客户端缓冲区临时修改为不限制也未见生效。</p>
-<p>这下犯愁了，由于这个修数程序几乎没有日志，代码也不是我们编写，而是一位外地的同事提供的。只能一波人紧急分析代码，一波人继续查询错误日志，从异常的堆栈中我们发现异常是从执行redis的一个get方法抛出的，难道是get某个key的时候出现了异常？由于日志中没有打印具体的key信息，所以也不清楚具体情况，难道是某个key的体积过大，导致查询的时候超过了限制？于是立即使用bigkeys查询了一下Redis的大体积key，结果最大的也只有十几kb，很显然这也不是原因。大家正在一筹莫展，准备把程序加上详细的日志再具体分析，但是生产环境做紧急变更交付物是很困难的，之前我们已经在模拟环境同步生产数据测了好几轮，都未发现问题，为何生产就出现问题了呢？</p>
+<p>这下犯愁了，由于这个程序几乎没有日志，代码也不是我们编写，而是一位外地的同事提供的。只能一波人紧急分析代码，一波人继续查询错误日志，从异常的堆栈中我们发现异常是从执行redis的一个get方法抛出的，难道是get某个key的时候出现了异常？由于日志中没有打印具体的key信息，所以也不清楚具体情况，难道是某个key的体积过大，导致查询的时候超过了限制？于是立即使用bigkeys查询了一下Redis的大体积key，结果最大的也只有十几kb，很显然这也不是原因。大家正在一筹莫展，准备把程序加上详细的日志再具体分析，但是生产环境做紧急变更交付物是很困难的，之前我们已经在模拟环境同步生产数据测了好几轮，都未发现问题，为何生产就出现问题了呢？</p>
 <p>继续看codis porxy的日志，发现了一个特殊的地方，客户端建立的连接每次都是经过60s后被断开，显示EOF错误，代表客户端客户端主动断开，于是我们立即查找相关配置，是否存在60s的配置，这时候运维同学提到了一件事，codis-porxy使用了nginx做负载均衡代理，nginx应该做了超时配置，于是我们翻看了nginx配置，果然存在一个60s的超时配置，而这时候我们再去翻看代码逻辑，发现了一个问题，首先程序使用jedis建立一个redis连接，然后从MySQL从查找临时表所有数据，然后修改redis缓存。而我们的临时表数据过于庞大，而且缺乏索引，所以查询这一步花费了很长时间，已经超过60s，等数据查询完毕，再执行redis操作，此时一直空闲的连接已经被nginx当作超时给断开了。为何之前模拟环境并未出现这个问题？应该是最近待修的数据又增加了很多，刚好超过60s，导致这个问题并未在模拟阶段发现。</p>
 <p>于是我们在模拟环境复现该问题，并临时把nginx配置修改为600s，于是修数程序正常执行，没有异常，问题到此解决，于是生产同步操作，最终完成了升级。</p>
 
