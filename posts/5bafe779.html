@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2">
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="XSTtbtoqKtzGMYPUj-zr5CTEysr24IrtAHLBy7t2dCs">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="D7siwIFDLd">
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.proxy.ustclug.org/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。">
+<meta name="keywords" content="linux,shell,awk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux的awk命令">
+<meta property="og:url" content="https://www.elietio.xyz/posts/5bafe779.html">
+<meta property="og:site_name" content="零の轨迹">
+<meta property="og:description" content="awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-13T08:18:25.216Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux的awk命令">
+<meta name="twitter:description" content="awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="零の轨迹" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.elietio.xyz/posts/5bafe779">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>linux的awk命令 | 零の轨迹</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138239024-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138239024-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?737f08743fe5a46f27038c5d265c6daf";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">零の轨迹</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">Sic Parvis Magna</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-desktop"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user-circle-o"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-list"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-database"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-movies">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/movies" rel="section"><i class="menu-item-icon fa fa-fw fa-film"></i> <br>电影</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-games">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/games" rel="section"><i class="menu-item-icon fa fa-fw fa-gamepad"></i> <br>游戏</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.elietio.xyz/posts/5bafe779.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elietio">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="零の轨迹">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">linux的awk命令
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-10 19:39:27" itemprop="dateCreated datePublished" datetime="2019-04-10T19:39:27+08:00">2019-04-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-13 16:18:25" itemprop="dateModified" datetime="2020-06-13T16:18:25+08:00">2020-06-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/shell/" itemprop="url" rel="index"><span itemprop="name">shell</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/posts/5bafe779.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/5bafe779.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/posts/5bafe779.html" class="leancloud_visitors" data-flag-title="linux的awk命令">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。<br><a id="more"></a><br>awk 命令和 sed 命令结构相同，通常情况下，awk 将每个输入行解释为一条记录而每一行中的内容（由空格或者制表符分隔）解释为每一个字段，一个或者多个连续空格或者制表符看做定界符。awk 中 <code>$0</code> 代表整个记录。</p>
+<h2 id="linux的awk命令"><a href="#linux的awk命令" class="headerlink" title="linux的awk命令"></a>linux的awk命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk ' /MA/ &#123; print $1 &#125;' list</span><br></pre></td></tr></table></figure>
+<p>解释：打印包含 MA 的行中的第一个单词。再举一个具体的例子，比如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 'this is one world\nthat is another world' | awk '&#123;print $1&#125;'</span><br></pre></td></tr></table></figure>
+<p>那么输出就是 awk 处理之后的每一行第一个字符也就是</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this</span><br><span class="line">that</span><br></pre></td></tr></table></figure>
+<h3 id="基本格式"><a href="#基本格式" class="headerlink" title="基本格式"></a>基本格式</h3><p>awk 命令的基本格式</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk [options] <span class="string">'script'</span> file</span><br></pre></td></tr></table></figure>
+<p><code>options</code> 这个表示一些可选的参数选项，<code>script</code> 表示 awk 的可执行脚本代码（一般被<code>{}</code> 花括号包围），这个是必须的。<code>file</code> 这个表示 awk 需要处理的文件，注意需要是纯文本文件（意味着 awk 能够处理）。</p>
+<h3 id="awk-自定义分隔符"><a href="#awk-自定义分隔符" class="headerlink" title="awk 自定义分隔符"></a>awk 自定义分隔符</h3><p>之前提到的awk 默认的分割符为<strong>空格和制表符</strong>，awk 会根据这个默认的分隔符将每一行分为若干字段，依次用 <code>$1</code>, <code>$2</code>,<code>$3</code> 来表示，可以使用 <code>-F</code> 参数来指定分隔符</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F <span class="string">':'</span> <span class="string">'&#123;print $1&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>解释：使用 <code>-F</code> 来改变分隔符为 <code>:</code> ，比如上面的命令将 /etc/passwd 文件中的每一行用冒号 <code>:</code> 分割成多个字段，然后用 print 将第 1 列字段的内容打印输出</p>
+<p>在 awk 中同时指定多个分隔符，比如现在有这样一个文件 some.log 文件内容如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Grape(100g)1980</span><br><span class="line">raisins(500g)1990</span><br><span class="line">plum(240g)1997</span><br><span class="line">apricot(180g)2005</span><br><span class="line">nectarine(200g)2008</span><br></pre></td></tr></table></figure>
+<p>现在我们想将上面的 some.log 文件中按照 “水果名称（重量）年份” 来进行分割</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ awk -F <span class="string">'[()]'</span> <span class="string">'&#123;print $1, $2, $3&#125;'</span> some.log</span><br><span class="line">Grape 100g 1980</span><br><span class="line">raisins 500g 1990</span><br><span class="line">plum 240g 1997</span><br><span class="line">apricot 180g 2005</span><br><span class="line">nectarine 200g 2008</span><br></pre></td></tr></table></figure>
+<p>在 <code>-F</code> 参数中使用一对方括号来指定多个分隔符，awk 处理 some.log 文件时就会使用 “(“ 或者 “)” 来对文件的每一行进行分割。</p>
+<h3 id="awk-内置变量的使用"><a href="#awk-内置变量的使用" class="headerlink" title="awk 内置变量的使用"></a>awk 内置变量的使用</h3><p>awk 除了 <code>$</code> 和数字表示字段还有一些其他的内置变量：</p>
+<ul>
+<li>$0 这个表示文本处理时的当前行，$1 表示文本行被分隔后的第 1 个字段列，$2 表示文本行被分割后的第 2 个字段列，$3 表示文本行被分割后的第 3 个字段列，$n 表示文本行被分割后的第 n 个字段列</li>
+<li>NR 表示文件中的行号，表示当前是第几行</li>
+<li>NF 表示文件中的当前行被分割的列数，可以理解为 MySQL 数据表里面每一条记录有多少个字段，所以 $NF 就表示最后一个字段，$(NF-1) 就表示倒数第二个字段</li>
+<li>FS 表示 awk 的输入分隔符，默认分隔符为空格和制表符，可以对其进行自定义设置</li>
+<li>OFS 表示 awk 的输出分隔符，默认为空格，也可以对其进行自定义设置</li>
+<li>FILENAME 表示当前文件的文件名称，如果同时处理多个文件，它也表示当前文件名称</li>
+<li>RS 行分隔符，用于分割行，默认为换行符</li>
+<li>ORS 输出记录的分隔符，默认为换行符</li>
+</ul>
+<p>比如我们有这么一个文本文件 fruit.txt 内容如下，用它来演示如何使用 awk 命令工具</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">peach    100   Mar  1997   China</span><br><span class="line">Lemon    150   Jan  1986   America</span><br><span class="line">Pear     240   Mar  1990   Janpan</span><br><span class="line">avocado  120   Feb  2008   china</span><br><span class="line"></span><br><span class="line">awk <span class="string">'&#123;print $0&#125;'</span> fruit.txt   <span class="comment"># 表示打印输出文件的每一整行的内容</span></span><br><span class="line">awk <span class="string">'&#123;print $1&#125;'</span> fruit.txt   <span class="comment"># 表示打印输出文件的每一行的第 1 列内容</span></span><br><span class="line">awk <span class="string">'&#123;print $1, $2&#125;'</span> fruit.txt</span><br></pre></td></tr></table></figure>
+<p>文件的每一行的每一列的内容除了可以用 print 命令打印输出以外，还可以对其进行赋值</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;$2 = "***"; print $0&#125;'</span> fruit.txt</span><br></pre></td></tr></table></figure>
+<p>上面的例子就是表示通过对 <code>$2</code> 变量进行重新赋值，来隐藏每一行的第 2 列内容，并且用星号 <code>*</code> 来代替其输出</p>
+<p>在参数列表中加入一些字符串或者转义字符之类的东东</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;print $1 "\t" $2 "\t" $3&#125;'</span> fruit.txt</span><br></pre></td></tr></table></figure>
+<p>像上面这样，你可以在 print 的参数列表中加入一些字符串或者转义字符之类的东东，让输出的内容格式更漂亮，但一定要记住要使用双引号。</p>
+<p>awk 内置 NR 变量表示每一行的行号</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;print NR "\t" $0&#125;'</span> fruit.txt</span><br><span class="line"></span><br><span class="line">1   peach    100   Mar  1997   China</span><br><span class="line">2   Lemon    150   Jan  1986   America</span><br><span class="line">3   Pear     240   Mar  1990   Janpan</span><br><span class="line">4   avocado  120   Feb  2008   china</span><br></pre></td></tr></table></figure>
+<p>awk 内置 <code>NF</code> 变量表示每一行的列数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;print NF "\t" $0&#125;'</span> fruit.txt</span><br><span class="line"></span><br><span class="line">5   peach    100   Mar  1997   China</span><br><span class="line">5   Lemon    150   Jan  1986   America</span><br><span class="line">5   Pear     240   Mar  1990   Janpan</span><br><span class="line">5   avocado  120   Feb  2008   china</span><br></pre></td></tr></table></figure>
+<p>awk 中 <code>$NF</code> 变量的使用</p>
+<pre><code>awk &apos;{print $NF}&apos; fruit.txt
+</code></pre><p>上面这个 <code>$NF</code> 就表示每一行的最后一列，因为 <code>NF</code> 表示一行的总列数，在这个文件里表示有 5 列，然后在其前面加上 <code>$</code> 符号，就变成了 <code>$5</code> ，表示第 5 列</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;print $(NF - 1)&#125;'</span> fruit.txt</span><br><span class="line"></span><br><span class="line">1997</span><br><span class="line">1986</span><br><span class="line">1990</span><br><span class="line">2008</span><br></pre></td></tr></table></figure>
+<p>上面 <code>$(NF-1)</code> 表示倒数第 2 列， <code>$(NF-2)</code> 表示倒数第 3 列，依次类推。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'NR % 6'</span>        <span class="comment"># 打印出了 6 倍数行之外的其他行</span></span><br><span class="line">awk <span class="string">'NR &gt; 5'</span>        <span class="comment"># 打印第 5 行之后内容，类似 `tail -n +6` 或者 `sed '1,5d'`</span></span><br><span class="line">awk <span class="string">'NF &gt;= 6'</span>       <span class="comment"># 打印大于等于 6 列的行</span></span><br><span class="line">awk <span class="string">'/foo/ &amp;&amp; /bar/'</span>    <span class="comment"># 打印匹配 `/foo/` 和 `/bar/` 的行</span></span><br><span class="line">awk <span class="string">'/foo/ &amp;&amp; !/bar/'</span>   <span class="comment"># 打印包含 `/foo/` 不包含 `/bar/` 的行</span></span><br><span class="line">awk <span class="string">'/foo/ || /bar/'</span>    <span class="comment"># 或</span></span><br><span class="line">awk <span class="string">'/foo/,/bar/'</span>       <span class="comment"># 打印从匹配 `/foo/` 开始的行到 `/bar/` 的行，包含这两行</span></span><br></pre></td></tr></table></figure>
+<h3 id="awk-内置函数"><a href="#awk-内置函数" class="headerlink" title="awk 内置函数"></a>awk 内置函数</h3><p>awk 还提供了一些内置函数，比如</p>
+<ul>
+<li><code>toupper()</code> 用于将字符转为大写</li>
+<li><code>tolower()</code> 将字符转为小写</li>
+<li><code>length()</code> 长度</li>
+<li><code>substr()</code> 子字符串</li>
+<li><code>sin()</code> 正弦</li>
+<li><code>cos()</code> 余弦</li>
+<li><code>sqrt()</code> 平方根</li>
+<li><code>rand()</code> 随机数</li>
+</ul>
+<p>更多的方法可以参考 <code>man awk</code></p>
+<h3 id="awk-同时处理多个文件"><a href="#awk-同时处理多个文件" class="headerlink" title="awk 同时处理多个文件"></a>awk 同时处理多个文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;print FILENAME "\t" $0&#125;'</span> demo1.txt demo2.txt</span><br></pre></td></tr></table></figure>
+<p>当你使用 awk 同时处理多个文件的时候，它会将多个文件合并处理，变量<code>FILENAME</code> 就表示当前文本行所在的文件名称。</p>
+<h3 id="BEGIN-关键字的使用"><a href="#BEGIN-关键字的使用" class="headerlink" title="BEGIN 关键字的使用"></a>BEGIN 关键字的使用</h3><p>在脚本代码段前面使用 BEGIN 关键字时，它会在开始读取一个文件之前，运行一次 <code>BEGIN</code>关键字后面的脚本代码段， BEGIN 后面的脚本代码段只会执行一次，执行完之后 awk 程序就会退出</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'BEGIN &#123;print "Start read file"&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>awk 脚本中可以用多个花括号来执行多个脚本代码，就像下面这样</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'BEGIN &#123;print "Start read file"&#125; &#123;print $0&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<h3 id="END-关键字使用方法"><a href="#END-关键字使用方法" class="headerlink" title="END 关键字使用方法"></a>END 关键字使用方法</h3><p>awk 的 END 指令和 BEGIN 恰好相反，在 awk 读取并且处理完文件的所有内容行之后，才会执行<code>END</code>后面的脚本代码段</p>
+<pre><code>awk &apos;END {print &quot;End file&quot;}&apos; /etc/passwd
+awk &apos;BEGIN {print &quot;Start read file&quot;} {print $0} END {print &quot;End file&quot;}&apos; /etc/passwd
+</code></pre><h3 id="在-awk-中使用变量"><a href="#在-awk-中使用变量" class="headerlink" title="在 awk 中使用变量"></a>在 awk 中使用变量</h3><p>可以在 awk 脚本中声明和使用变量</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;msg="hello world"; print msg&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>awk 声明的变量可以在任何多个花括号脚本中使用</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'BEGIN &#123;msg="hello world"&#125; &#123;print msg&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>在 awk 中使用数学运算，在 awk 中，像其他编程语言一样，它也支持一些基本的数学运算操作</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;a = 12; b = 24; print a + b&#125;'</span> company.txt</span><br></pre></td></tr></table></figure>
+<p>上面这段脚本表示，先声明两个变量 a = 12 和 b = 24，然后用 print 打印出 a 加上 b 的结果。</p>
+<p>请记住 awk 是针对文件的每一行来执行一次单引号 里面的脚本代码，每读取到一行就会执行一次，文件里面有多少行就会执行多少次，但 BEGIN 和 END 关键字后脚本代码除外，如果被处理的文件中什么都没有，那 awk 就一次都不会执行。</p>
+<p>awk 还支持其他的数学运算符</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+ 加法运算符</span><br><span class="line">- 减法运算符</span><br><span class="line">* 乘法运算符</span><br><span class="line">/ 除法运算符</span><br><span class="line">% 取余运算符</span><br></pre></td></tr></table></figure>
+<p>在 awk 中使用条件判断</p>
+<p>比如有一个文件 company.txt 内容如下</p>
+<pre><code>yahoo   100 4500
+google  150 7500
+apple   180 8000
+twitter 120 5000
+</code></pre><p>如果要判断文件的第 3 列数据，也就是平均工资小于 5500 的公司，然后将其打印输出</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'$3 &lt; 5500 &#123;print $0&#125;'</span> company.txt</span><br></pre></td></tr></table></figure>
+<p>上面的命令结果就是平均工资小于 5500 的公司名单，<code>$3 &lt; 5500</code> 表示当第 3 列字段的内容小于 5500 的时候才会执行后面的 {print $0} 代码块</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'$1 == "yahoo" &#123;print $0&#125;'</span> company.txt</span><br></pre></td></tr></table></figure>
+<p>awk 还有一些其他的条件操作符如下</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">运算符</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&lt;</td>
+<td style="text-align:left">小于</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;=</td>
+<td style="text-align:left">小于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">==</td>
+<td style="text-align:left">等于</td>
+</tr>
+<tr>
+<td style="text-align:left">!=</td>
+<td style="text-align:left">不等于</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;</td>
+<td style="text-align:left">大于</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;=</td>
+<td style="text-align:left">大于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">~</td>
+<td style="text-align:left">匹配正则表达式</td>
+</tr>
+<tr>
+<td style="text-align:left">!~</td>
+<td style="text-align:left">不匹配正则表达式</td>
+</tr>
+</tbody>
+</table>
+<p>使用 if 指令判断来实现上面同样的效果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;if ($3 &lt; 5500) print $0&#125;'</span> company.txt</span><br></pre></td></tr></table></figure>
+<p>上面表示如果第 3 列字段小于 5500 的时候就会执行后面的 print $0</p>
+<h3 id="在-awk-中使用正则表达式"><a href="#在-awk-中使用正则表达式" class="headerlink" title="在 awk 中使用正则表达式"></a>在 awk 中使用正则表达式</h3><p>比如现在我们有这么一个文件 poetry.txt 内容如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">This above all: to thine self be <span class="literal">true</span></span><br><span class="line">There is nothing either good or bad, but thinking makes it so</span><br><span class="line">There’s a special providence <span class="keyword">in</span> the fall of a sparrow</span><br><span class="line">No matter how dark long, may eventually <span class="keyword">in</span> the day arrival</span><br></pre></td></tr></table></figure>
+<p>使用正则表达式匹配字符串 “There” ，将包含这个字符串的行打印并输出</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/There/&#123;print $0&#125;'</span> poetry.txt</span><br><span class="line"></span><br><span class="line">There is nothing either good or bad, but thinking makes it so</span><br><span class="line">There’s a special providence <span class="keyword">in</span> the fall of a sparrow</span><br></pre></td></tr></table></figure>
+<p>使用正则表达式配一个包含字母 t 和字母 e ，并且 t 和 e 中间只能有任意单个字符的行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/t.e/&#123;print $0&#125;'</span> poetry.txt</span><br><span class="line"></span><br><span class="line">There is nothing either good or bad, but thinking makes it so</span><br><span class="line">There’s a special providence <span class="keyword">in</span> the fall of a sparrow</span><br><span class="line">No matter how dark long, may eventually <span class="keyword">in</span> the day arrival</span><br></pre></td></tr></table></figure>
+<p>如果只想匹配单纯的字符串 “t.e”， 那正则表达式就是这样的 /t.e/ ，用反斜杠来转义 . 符号 因为 . 在正则表达式里面表示任意单个字符。</p>
+<p>使用正则表达式来匹配所有以 “The” 字符串开头的行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/^The/&#123;print $0&#125;'</span> poetry.txt</span><br></pre></td></tr></table></figure>
+<p>在正则表达式中 <code>^</code>表示以某某字符或者字符串开头。</p>
+<p>使用正则表达式来匹配所有以 “true” 字符串结尾的行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/true$/&#123;print $0&#125;'</span> poetry.txt</span><br></pre></td></tr></table></figure>
+<p>在正则表达式中 $ 表示以某某字符或者字符串结尾。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/m[a]t/&#123;print $0&#125;'</span> poetry.txt</span><br><span class="line"></span><br><span class="line">No matter how dark long, may eventually <span class="keyword">in</span> the day arrival</span><br></pre></td></tr></table></figure>
+<p>上面这个正则表达式 <code>/m[a]t/</code> 表示匹配包含字符 m ，然后接着后面包含中间方括号中表示的单个字符 a ，最后包含字符 t 的行，输出结果中只有单词 “matter” 符合这个正则表达式的匹配。因为正则表达式 [a] 方括号中表示匹配里面的任意单个字符。</p>
+<p>继续上面的一个新例子如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/^Th[ie]/&#123;print $0&#125;'</span> poetry.txt</span><br></pre></td></tr></table></figure>
+<p>这个例子中的正则表达式 /^Th[ie]/ 表示匹配以字符串 “Thi” 或者 “The” 开头的行，正则表达式方括号中表示匹配其中的任意单个字符。</p>
+<p>再继续上面的新的用法</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/s[a-z]/&#123;print $0&#125;'</span> poetry.txt</span><br></pre></td></tr></table></figure>
+<p>正则表达式 <code>/s[a-z]/</code> 表示匹配包含字符 s 然后后面跟着任意 a 到 z 之间的单个字符的字符串，比如 “se”, “so”, “sp” 等等。</p>
+<p>正则表达式 [] 方括号中还有一些其他用法比如下面这些</p>
+<pre><code>[a-zA-Z]  表示匹配小写的 a 到 z 之间的单个字符，或者大写的 A 到 Z 之间的单个字符
+[^a-z]    符号 `^` 在方括号里面表示取反，也就是非的意思，表示匹配任何非 a 到 z 之间的单个字符
+</code></pre><p>正则表达式中的星号 <code>*</code> 和加号 <code>+</code> 的使用方法，<code>*</code> 表示匹配星号前字符串 0 次或者多次，<code>+</code> 和星号原理差不多，只是加号表示任意 1 个或者 1 个以上，也就是必须至少要出现一次。</p>
+<p>正则表达式问号 ? 的使用方法，正则中的问号 <code>?</code> 表示它前面的字符只能出现 0 次 或者 1 次。</p>
+<p>正则表达式中的 {} 花括号用法，花括号 {} 表示规定它前面的字符必须出现的次数，像这个 /go{2}d/ 就表示只匹配字符串 “good”，也就是中间的字母 “o” 必须要出现 2 次。</p>
+<p>正则表达式中的花括号还有一些其他的用法如下</p>
+<pre><code>/go{2,10}d/   表示字母 &quot;o&quot; 只能可以出现 2 次，3 次，4 次，5 次，6 次 ... 一直到 10 次
+/go{2,}d/     表示字母 &quot;o&quot; 必须至少出现 2 次或着 2 次以上
+</code></pre><p>正则表达式中的圆括号表示将多个字符当成一个完整的对象来看待。比如 /th(in){1}king/ 就表示其中字符串 “in” 必须出现 1 次。而如果不加圆括号就变成了 /thin{1}king/ 这个就表示其中字符 “n” 必须出现 1 次。</p>
+<h3 id="一些组合使用"><a href="#一些组合使用" class="headerlink" title="一些组合使用"></a>一些组合使用</h3><p>使用 awk 过滤 history 输出，找到最常用的命令<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">history</span> | awk <span class="string">'&#123;a[$2]++&#125;END&#123;for(i in a)&#123;print a[i] " " i&#125;&#125;'</span> | sort -rn | head</span><br></pre></td></tr></table></figure></p>
+<p>过滤文件中重复行<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'!x[$0]++'</span> &lt;file&gt;</span><br></pre></td></tr></table></figure></p>
+<p>将一行长度超过 72 字符的行打印<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'length&gt;72'</span> file</span><br></pre></td></tr></table></figure></p>
+<p>查看最近哪些用户使用系统<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last | grep -v <span class="string">"^$"</span> | awk <span class="string">'&#123; print $1 &#125;'</span> | sort -nr | uniq -c</span><br></pre></td></tr></table></figure></p>
+<p>假设有一个文本，每一行都是一个 int 数值，想要计算这个文件每一行的和，可以使用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;s+=$1&#125; ENG &#123;printf "%.0f", s&#125;'</span> /path/to/file</span><br></pre></td></tr></table></figure></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><blockquote>
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2018/11/awk.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2018/11/awk.html</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Elietio</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://www.elietio.xyz/posts/5bafe779.html" title="linux的awk命令">https://www.elietio.xyz/posts/5bafe779.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+          
+            <a href="/tags/awk/" rel="tag"><i class="fa fa-tag"></i> awk</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/eb59d595.html" rel="next" title="对于含有泛型的类,如何在类中获取泛型的class对象？">
+                <i class="fa fa-chevron-left"></i> 对于含有泛型的类,如何在类中获取泛型的class对象？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/d00638d8.html" rel="prev" title="hexo和主题多设备同步">
+                hexo和主题多设备同步 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/">
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Elietio">
+             </a>   
+            
+              <p class="site-author-name" itemprop="name">Elietio</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Elietio" title="GitHub &rarr; https://github.com/Elietio" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:xzc549212830@gmail.com" title="E-Mail &rarr; mailto:xzc549212830@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/p/1005052348377625/home" title="Weibo &rarr; https://weibo.com/p/1005052348377625/home" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/Elietio" title="Twitter &rarr; https://twitter.com/Elietio" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://psnine.com/psnid/elietowa" title="Psnine &rarr; https://psnine.com/psnid/elietowa" rel="noopener" target="_blank"><i class="fa fa-fw fa-trophy"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux的awk命令"><span class="nav-number">1.</span> <span class="nav-text">linux的awk命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本格式"><span class="nav-number">1.1.</span> <span class="nav-text">基本格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-自定义分隔符"><span class="nav-number">1.2.</span> <span class="nav-text">awk 自定义分隔符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-内置变量的使用"><span class="nav-number">1.3.</span> <span class="nav-text">awk 内置变量的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-内置函数"><span class="nav-number">1.4.</span> <span class="nav-text">awk 内置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk-同时处理多个文件"><span class="nav-number">1.5.</span> <span class="nav-text">awk 同时处理多个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BEGIN-关键字的使用"><span class="nav-number">1.6.</span> <span class="nav-text">BEGIN 关键字的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#END-关键字使用方法"><span class="nav-number">1.7.</span> <span class="nav-text">END 关键字使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-awk-中使用变量"><span class="nav-number">1.8.</span> <span class="nav-text">在 awk 中使用变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-awk-中使用正则表达式"><span class="nav-number">1.9.</span> <span class="nav-text">在 awk 中使用正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些组合使用"><span class="nav-number">1.10.</span> <span class="nav-text">一些组合使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">reference</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Elietio</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+
+
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'f7uwMwxgaECgSYS9CPnDMNN0-MdYXbMMI',
+    appKey: '15oO6f9HT7gm8tErqOB1NQqq',
+    placeholder: '─=≡Σ((( つ•̀ω•́)つ动感光波哔哔哔!!',
+    avatar: 'wavatar',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+    
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+        flOptions.iconStyle = "box";
+      
+        flOptions.boxForm = "vertical";
+      
+        flOptions.position = "middleRight";
+      
+        flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/poi.model.json"},"display":{"position":"left","hOffset":120,"vOffset":-80},"mobile":{"show":false,"scale":0.7},"react":{"opacity":0.9},"dialog":{"enable":true,"hitokoto":true},"log":false});</script></body>
+</html>
