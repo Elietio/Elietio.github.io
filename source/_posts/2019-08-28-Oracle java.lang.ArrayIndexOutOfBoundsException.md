@@ -61,23 +61,19 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: -32768
 嗯，这次很顺利，没有再出现异常，看来ojdbc14确实有些问题，但是还是比较疑惑，单单400条数据，每条9个参数就已经超过限制了吗？
 ```xml
 <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO table (HSTRY_ID, PB_BOND_ID, APPID,
-        SR_NO_ID, GRP_ID, TNDR_PRC,
-        THE_REF_YLD, CRT_TM, UPD_TM
+        INSERT INTO table (a, b, c, d ......
         )
         SELECT SEQ.nextval,A.* FROM (
         <foreach collection="list" item="item" index="index" separator="union all">
             SELECT
-            #{item.pbBondId,jdbcType=BIGINT}, #{item.appId,jdbcType=VARCHAR},
-            #{item.srNoId,jdbcType=BIGINT}, #{item.grpId,jdbcType=VARCHAR}, #{item.tndrPrc,jdbcType=VARCHAR},
-            #{item.theRefYld,jdbcType=VARCHAR}, #{item.crtTm,jdbcType=TIMESTAMP}, #{item.updTm,jdbcType=TIMESTAMP}
+            #{item.a},#{item.b},#{item.c},#{item.d}......
             FROM dual
         </foreach>) A
     </insert>
 ```
 拼接下来实际SQL如下，类似于insert  into tableA select * from tableB
 ```sql
-INSERT INTO table (HSTRY_ID, PB_BOND_ID, APPID, SR_NO_ID, GRP_ID, TNDR_PRC, THE_REF_YLD, CRT_TM, UPD_TM)
+INSERT INTO table (a, b, c, d ......)
   SELECT
     SEQ.nextval,
     A.*
