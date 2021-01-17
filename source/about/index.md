@@ -8,4 +8,4 @@ comments: true
 <a href="https://psnprofiles.com/ElieTowa"><img src="https://card.psnprofiles.com/2/ElieTowa.png" border="0"></a>
 ## 网易云音乐
 
-{% meting "52921110" "netease" "playlist" "autoplay" "mutex:true" "listmaxheight:340px" "preload:none" "theme:#ad7a86"%}
+{% meting "52921110" "netease" "playlist" "mutex:true" "listmaxheight:340px" "preload:none" "theme:#ad7a86"%}
