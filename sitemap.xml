@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.elietio.xyz/about/index.html</loc>
+    
+    <lastmod>2021-01-17T04:59:46.858Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.elietio.xyz/posts/264bd07b.html</loc>
+    
+    <lastmod>2021-01-17T04:51:05.559Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.elietio.xyz/posts/8f94cbbe.html</loc>
     
     <lastmod>2020-11-01T05:49:57.543Z</lastmod>
@@ -86,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/about/index.html</loc>
-    
-    <lastmod>2020-06-13T08:18:25.218Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.elietio.xyz/posts/8f7990e0.html</loc>
     
     <lastmod>2020-06-13T08:18:25.217Z</lastmod>
@@ -156,13 +163,6 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/posts/b86735db.html</loc>
-    
-    <lastmod>2020-06-13T08:18:25.216Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.elietio.xyz/posts/9f2531c3.html</loc>
     
     <lastmod>2020-06-13T08:18:25.216Z</lastmod>
@@ -170,9 +170,9 @@
   </url>
   
   <url>
-    <loc>https://www.elietio.xyz/posts/ba9462e4.html</loc>
+    <loc>https://www.elietio.xyz/posts/b86735db.html</loc>
     
-    <lastmod>2020-06-13T08:18:25.215Z</lastmod>
+    <lastmod>2020-06-13T08:18:25.216Z</lastmod>
     
   </url>
   
@@ -185,6 +185,13 @@
   
   <url>
     <loc>https://www.elietio.xyz/posts/7a9cc514.html</loc>
+    
+    <lastmod>2020-06-13T08:18:25.215Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.elietio.xyz/posts/ba9462e4.html</loc>
     
     <lastmod>2020-06-13T08:18:25.215Z</lastmod>
     
